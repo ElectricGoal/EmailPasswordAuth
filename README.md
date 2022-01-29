@@ -1,2 +1,2 @@
 # EmailPasswordAuth
-Firebase Authentication | SignIn and LogIn
+Firebase Authentication | SignUp, Login and Logout
