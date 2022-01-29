@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:login_app/models/models.dart';
-import 'package:login_app/screens/home_screen.dart';
-import 'package:login_app/screens/initialize_screen.dart';
-import 'package:login_app/screens/register_screen.dart';
 import 'package:login_app/screens/screens.dart';
 
 class AppRouter extends RouterDelegate
