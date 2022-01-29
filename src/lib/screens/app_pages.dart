@@ -4,4 +4,5 @@ class AppPages {
   static String registerPath = '/register';
   static String home = '/';
   static String profilePath = '/profile';
+  static String resetPassPath = '/resetPass';
 }

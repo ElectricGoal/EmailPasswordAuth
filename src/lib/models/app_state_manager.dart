@@ -12,12 +12,14 @@ class AppStateManager extends ChangeNotifier {
   bool _initialized = false;
   bool _loggedIn = false;
   bool _registered = false;
+  bool _resetPass = false;
 
   int _selectedTab = AppTab.tab0;
 
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
   bool get isRegistered => _registered;
+  bool get isResetPass => _resetPass;
   int get getSelectedTab => _selectedTab;
 
   void initializeApp() {
@@ -32,7 +34,6 @@ class AppStateManager extends ChangeNotifier {
   }
 
   void login() {
-    
     _loggedIn = true;
     _registered = true;
 
@@ -53,6 +54,12 @@ class AppStateManager extends ChangeNotifier {
 
   void register() {
     _registered = true;
+
+    notifyListeners();
+  }
+
+  void resetPass(bool value) {
+    _resetPass = value;
 
     notifyListeners();
   }

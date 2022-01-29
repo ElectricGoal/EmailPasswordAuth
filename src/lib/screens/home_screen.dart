@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
         child: const Icon(
           Icons.account_circle,
           size: 40,
-          color: Colors.amber,
+          color: Colors.white,
         ),
         onTap: () {
           Provider.of<ProfileManager>(context, listen: false)

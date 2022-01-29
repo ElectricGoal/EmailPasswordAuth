@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:login_app/models/models.dart';
 import 'package:login_app/screens/home_screen.dart';
 import 'package:login_app/screens/initialize_screen.dart';
-import 'package:login_app/screens/login_screen.dart';
 import 'package:login_app/screens/register_screen.dart';
 import 'package:login_app/screens/screens.dart';
 
@@ -35,8 +34,11 @@ class AppRouter extends RouterDelegate
       onPopPage: _handlePopPage,
       pages: [
         if (!appStateManager.isInitialized) InitializeScreen.page(),
-        if (appStateManager.isInitialized && !appStateManager.isLoggedIn)
+        if (appStateManager.isInitialized &&
+            !appStateManager.isLoggedIn &&
+            !appStateManager.isResetPass)
           LoginScreen.page(),
+        if (appStateManager.isResetPass) ResetPasswordScreen.page(),
         if (appStateManager.isLoggedIn && !appStateManager.isRegistered)
           RegisterScreen.page(),
         if (appStateManager.isLoggedIn && appStateManager.isRegistered)
@@ -54,6 +56,9 @@ class AppRouter extends RouterDelegate
     if (!route.didPop(result)) {
       // 4
       return false;
+    }
+    if (route.settings.name == AppPages.resetPassPath) {
+      appStateManager.resetPass(false);
     }
     if (route.settings.name == AppPages.registerPath) {
       appStateManager.returnToLogin();

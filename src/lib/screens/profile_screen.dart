@@ -42,19 +42,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 .tapOnProfile(false);
           },
         ),
+        actions: [
+          buildLogoutButton(),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buildProfile(),
-            const Spacer(),
-            buildLogoutButton(),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              buildProfile(),
+              // const Spacer(),
+              // buildLogoutButton(),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+            ],
+          ),
         ),
       ),
     );
@@ -89,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildLogoutButton() {
+  Widget fbuildLogoutButton() {
     return SizedBox(
       height: 55,
       child: MaterialButton(
@@ -110,6 +115,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Provider.of<ProfileManager>(context, listen: false)
               .logout();
         },
+      ),
+    );
+  }
+
+  Widget buildLogoutButton(){
+    return Container(
+      padding: const EdgeInsets.only(right: 16),
+      child: TextButton(
+        onPressed: () {
+           logout();
+
+            Provider.of<ProfileManager>(context, listen: false)
+                .tapOnProfile(false);
+
+            Provider.of<AppStateManager>(context, listen: false).logout();
+
+            Provider.of<ProfileManager>(context, listen: false)
+                .logout();
+        },
+        child: const Text(
+          'Logout',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.green,
+          ),
+        ),
       ),
     );
   }

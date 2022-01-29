@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             return;
           }
           signUp(emailController.text, passwordController.text);
-          Provider.of<AppStateManager>(context, listen: false).register();
+          
         },
       ),
     );
@@ -340,6 +340,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {postDetailsToFirestore()});
+        Provider.of<AppStateManager>(context, listen: false).register();
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":

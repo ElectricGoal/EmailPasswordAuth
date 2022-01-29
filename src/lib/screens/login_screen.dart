@@ -29,8 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextStyle focusedStyle =
       const TextStyle(color: Colors.green, height: 1);
 
-  final TextStyle unfocusedStyle = const TextStyle(color: Colors.grey);
-
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
@@ -59,13 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               headerField(),
               const SizedBox(height: 100),
-              emailField(context),
+              emailField(),
               const SizedBox(height: 20),
-              passwordField(context),
+              passwordField(),
               const SizedBox(height: 30),
               buildLoginButton(context),
               const SizedBox(height: 20),
               buildSignUpButton(context),
+              const SizedBox(height: 20),
+              buildForgotPassButton(context),
             ],
           ),
         ),
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget emailField(BuildContext context) {
+  Widget emailField() {
     return TextFormField(
       autofocus: false,
       controller: emailController,
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget passwordField(BuildContext context) {
+  Widget passwordField() {
     return TextFormField(
       autofocus: false,
       controller: passwordController,
@@ -220,6 +220,21 @@ class _LoginScreenState extends State<LoginScreen> {
         prefixIcon: Icon(
           Icons.vpn_key,
           color: Colors.green[400],
+        ),
+      ),
+    );
+  }
+
+  Widget buildForgotPassButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Provider.of<AppStateManager>(context, listen: false).resetPass(true);
+      },
+      child: const Text(
+        'Forgot password ?',
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.green,
         ),
       ),
     );
