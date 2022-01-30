@@ -30,7 +30,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextStyle focusedStyle =
       const TextStyle(color: Colors.green, height: 1);
 
-  final TextStyle unfocusedStyle = const TextStyle(color: Colors.grey);
 
   final _formKey = GlobalKey<FormState>();
 

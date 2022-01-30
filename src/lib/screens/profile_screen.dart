@@ -52,11 +52,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               buildProfile(),
-              // const Spacer(),
-              // buildLogoutButton(),
-              // const SizedBox(
-              //   height: 20,
-              // ),
             ],
           ),
         ),
@@ -90,31 +85,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: const TextStyle(fontSize: 21),
         ),
       ],
-    );
-  }
-
-  Widget fbuildLogoutButton() {
-    return SizedBox(
-      height: 55,
-      child: MaterialButton(
-        color: Colors.green,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        child: const Text(
-          'Log out',
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: () async {
-          logout();
-
-          Provider.of<ProfileManager>(context, listen: false)
-              .tapOnProfile(false);
-
-          Provider.of<AppStateManager>(context, listen: false).logout();
-
-          Provider.of<ProfileManager>(context, listen: false)
-              .logout();
-        },
-      ),
     );
   }
 
