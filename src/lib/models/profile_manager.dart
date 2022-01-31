@@ -12,10 +12,20 @@ class ProfileManager extends ChangeNotifier {
 
   bool _didSelectUser = false;
 
+  bool _darkMode = false;
+
   bool get didSelectUser => _didSelectUser;
+
+  bool get darkMode => _darkMode;
 
   void tapOnProfile(bool selected) {
     _didSelectUser = selected;
+
+    notifyListeners();
+  }
+
+  set darkMode(bool darkMode) {
+    _darkMode = darkMode;
 
     notifyListeners();
   }
