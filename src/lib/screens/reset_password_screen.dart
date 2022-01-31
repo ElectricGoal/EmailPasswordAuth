@@ -43,7 +43,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           child: const Icon(
             Icons.chevron_left,
             size: 35,
-            color: Colors.black,
           ),
           onTap: () {
             Navigator.pop(context, true);

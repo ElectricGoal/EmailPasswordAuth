@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:login_app/app_theme.dart';
 import 'package:login_app/models/models.dart';
 import 'package:login_app/navigation/app_router.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   runApp(
     const MyApp(),
   );
@@ -45,16 +46,24 @@ class _MyAppState extends State<MyApp> {
           create: (context) => _profileManager,
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'App',
-        theme: ThemeData(
-          primaryColor: Colors.green,
-        ),
-        home: Router(
-          routerDelegate: _appRouter,
-          backButtonDispatcher: RootBackButtonDispatcher(),
-        ),
+      child: Consumer<ProfileManager>(
+        builder: (context, profileManager, child) {
+          ThemeData theme;
+          if (profileManager.darkMode) {
+            theme = AppTheme.dark();
+          } else {
+            theme = AppTheme.light();
+          }
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'App',
+            theme: theme,
+            home: Router(
+              routerDelegate: _appRouter,
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            ),
+          );
+        },
       ),
     );
   }

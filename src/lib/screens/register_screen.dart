@@ -63,7 +63,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: const Icon(
             Icons.chevron_left,
             size: 35,
-            color: Colors.black,
           ),
           onTap: () {
             Navigator.pop(context, true);
