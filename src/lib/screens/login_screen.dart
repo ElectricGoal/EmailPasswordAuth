@@ -288,6 +288,9 @@ class _LoginScreenState extends State<LoginScreen> {
             errorMessage = "An undefined Error happened.";
         }
         Fluttertoast.showToast(msg: errorMessage!);
+        setState(() {
+          showSpinner = false;
+        });
         // ignore: avoid_print
         print(error.code);
       }
