@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_app/models/models.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import 'app_pages.dart';
@@ -30,7 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextStyle focusedStyle =
       const TextStyle(color: Colors.green, height: 1);
 
-
   final _formKey = GlobalKey<FormState>();
 
   final firstNameController = TextEditingController();
@@ -38,6 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  bool showSpinner = false;
 
   @override
   void dispose() {
@@ -69,29 +71,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              headerField(),
-              const SizedBox(height: 70),
-              firstNameField(),
-              const SizedBox(height: 20),
-              lastNameField(),
-              const SizedBox(height: 20),
-              emailField(),
-              const SizedBox(height: 20),
-              passwordField(),
-              const SizedBox(height: 20),
-              confirmPasswordField(),
-              const SizedBox(height: 30),
-              buildSignUpButton(context),
-              const SizedBox(height: 20),
-            ],
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                headerField(),
+                const SizedBox(height: 70),
+                firstNameField(),
+                const SizedBox(height: 20),
+                lastNameField(),
+                const SizedBox(height: 20),
+                emailField(),
+                const SizedBox(height: 20),
+                passwordField(),
+                const SizedBox(height: 20),
+                confirmPasswordField(),
+                const SizedBox(height: 30),
+                buildSignUpButton(context),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
@@ -142,11 +147,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: () async {
+          setState(() {
+            showSpinner = true;
+          });
           if (!_formKey.currentState!.validate()) {
             return;
           }
           signUp(emailController.text, passwordController.text);
-          
         },
       ),
     );
@@ -338,6 +345,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => {postDetailsToFirestore()});
         Provider.of<AppStateManager>(context, listen: false).register();
+        setState(() {
+          showSpinner = false;
+        });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":

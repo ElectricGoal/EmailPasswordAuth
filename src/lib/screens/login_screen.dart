@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_app/models/models.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import 'app_pages.dart';
@@ -34,6 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  bool showSpinner = false;
+
   @override
   void dispose() {
     emailController.dispose();
@@ -47,26 +50,29 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              headerField(),
-              const SizedBox(height: 100),
-              emailField(),
-              const SizedBox(height: 20),
-              passwordField(),
-              const SizedBox(height: 30),
-              buildLoginButton(context),
-              const SizedBox(height: 20),
-              buildSignUpButton(context),
-              const SizedBox(height: 20),
-              buildForgotPassButton(context),
-            ],
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                headerField(),
+                const SizedBox(height: 100),
+                emailField(),
+                const SizedBox(height: 20),
+                passwordField(),
+                const SizedBox(height: 30),
+                buildLoginButton(context),
+                const SizedBox(height: 20),
+                buildSignUpButton(context),
+                const SizedBox(height: 20),
+                buildForgotPassButton(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -117,6 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: () async {
+          setState(() {
+            showSpinner = true;
+          });
           if (!_formKey.currentState!.validate()) {
             return;
           }
@@ -251,6 +260,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Provider.of<AppStateManager>(context, listen: false).login(),
               },
             );
+        setState(() {
+          showSpinner = false;
+        });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":
