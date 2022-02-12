@@ -41,69 +41,69 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("users")
-              .doc(user!.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.greenAccent,
-                ),
-              );
-            }
-            final data = snapshot.data;
-            loggedInUser = UserModel.fromMap(data);
-            //print(loggedInUser.firstName);
-            Provider.of<ProfileManager>(context, listen: true)
-                .getDataUser(loggedInUser);
-            return Consumer<AppStateManager>(
-              builder: (
-                context,
-                appStateManager,
-                child,
-              ) {
-                return Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.green,
-                    title: Text("${loggedInUser.email}"),
-                    actions: [
-                      profileButton(),
-                    ],
-                  ),
-                  body: IndexedStack(
-                    index: widget.currentTab,
-                    children: pages,
-                  ),
-                  bottomNavigationBar: BottomNavigationBar(
-                    selectedItemColor: Colors.green,
-                    currentIndex: widget.currentTab,
-                    onTap: (index) {
-                      Provider.of<AppStateManager>(context, listen: false)
-                          .goToTab(index);
-                    },
-                    items: const <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        label: 'Tab 0',
-                        icon: Icon(Icons.explore),
-                      ),
-                      BottomNavigationBarItem(
-                        label: 'Tab 1',
-                        icon: Icon(Icons.book),
-                      ),
-                      BottomNavigationBarItem(
-                        label: 'Tab 2',
-                        icon: Icon(Icons.list),
-                      ),
-                    ],
+    return Consumer<AppStateManager>(
+      builder: (
+        context,
+        appStateManager,
+        child,
+      ) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green,
+            title: const Text("App"),
+            actions: [
+              profileButton(),
+            ],
+          ),
+          body: StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(user!.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    //backgroundColor: Colors.greenAccent,
+                    color: Colors.greenAccent,
                   ),
                 );
-              },
-            );
-          }),
+              }
+              final data = snapshot.data;
+              loggedInUser = UserModel.fromMap(data);
+              //print(loggedInUser.firstName);
+              Provider.of<ProfileManager>(context, listen: true)
+                  .getDataUser(loggedInUser);
+              return IndexedStack(
+                index: widget.currentTab,
+                children: pages,
+              );
+            },
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: Colors.green,
+            currentIndex: widget.currentTab,
+            onTap: (index) {
+              Provider.of<AppStateManager>(context, listen: false)
+                  .goToTab(index);
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                label: 'Tab 0',
+                icon: Icon(Icons.explore),
+              ),
+              BottomNavigationBarItem(
+                label: 'Tab 1',
+                icon: Icon(Icons.book),
+              ),
+              BottomNavigationBarItem(
+                label: 'Tab 2',
+                icon: Icon(Icons.list),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
