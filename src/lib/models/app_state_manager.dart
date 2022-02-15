@@ -3,12 +3,23 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 class AppTab {
+  /// Review: Better naming
   static const int tab0 = 0;
   static const int tab1 = 1;
   static const int tab2 = 2;
 }
 
+enum AppState {
+  initialized,
+  loggedIn,
+  registered,
+  resetPass,
+}
+
 class AppStateManager extends ChangeNotifier {
+  /// Review: can use enum instead of a bunch of bool
+  /// E.g : [AppState]
+
   bool _initialized = false;
   bool _loggedIn = false;
   bool _registered = false;
@@ -16,6 +27,9 @@ class AppStateManager extends ChangeNotifier {
 
   int _selectedTab = AppTab.tab0;
 
+  /// Review; if the code above use one enum to describe
+  /// current app state then you can reduce number of
+  /// getter here.
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
   bool get isRegistered => _registered;
@@ -76,6 +90,8 @@ class AppStateManager extends ChangeNotifier {
     _registered = false;
     _selectedTab = AppTab.tab0;
 
+    // Review: [initializeApp] will call notifyListener 2 seconds later.
+    // What the point of the next [notifyListeners] call ?
     initializeApp();
 
     notifyListeners();

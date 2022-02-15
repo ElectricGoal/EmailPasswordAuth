@@ -30,6 +30,9 @@ class AppRouter extends RouterDelegate
       key: navigatorKey,
       onPopPage: _handlePopPage,
       pages: [
+        /// Review: use too many bool variables make this code looks super complicated.
+        /// Should investigate about [currrentConfiguration] and make use of that configuration
+        /// to manage pages
         if (!appStateManager.isInitialized) InitializeScreen.page(),
         if (appStateManager.isInitialized &&
             !appStateManager.isLoggedIn &&

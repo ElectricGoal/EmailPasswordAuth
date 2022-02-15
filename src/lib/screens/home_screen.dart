@@ -70,6 +70,9 @@ class _HomeState extends State<Home> {
                 );
               }
               final data = snapshot.data;
+
+              /// Review: should add a check just in case parsing model from json cause
+              /// error which will obviously break all the below code.
               loggedInUser = UserModel.fromMap(data);
               //print(loggedInUser.firstName);
               Provider.of<ProfileManager>(context, listen: true)
@@ -84,6 +87,7 @@ class _HomeState extends State<Home> {
             selectedItemColor: Colors.green,
             currentIndex: widget.currentTab,
             onTap: (index) {
+              /// Review: can use shortcut like [context.read]
               Provider.of<AppStateManager>(context, listen: false)
                   .goToTab(index);
             },

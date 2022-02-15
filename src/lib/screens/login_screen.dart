@@ -60,6 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                /// Review: consider using Widget instead of Function.
+                /// Cons:
+                /// 1. Re-useable widgets
+                /// 2. Avoid debug problems when finding specific component
                 headerField(),
                 const SizedBox(height: 100),
                 emailField(),
@@ -129,6 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
           if (!_formKey.currentState!.validate()) {
             return;
           }
+
+          /// Review: should trim your email and password to prevent empty characters
+          /// This usually happen when user use quick suggestion on real devices.
           signIn(emailController.text, passwordController.text);
         },
       ),
@@ -165,6 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
+        /// Review: should have an utility to do the validation in order to
+        /// seperate logics with views
         if (value!.isEmpty) {
           return ("Please Enter Your Email");
         }
@@ -203,6 +212,8 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       obscureText: true,
       validator: (value) {
+        /// Review: should have an utility to do the validation in order to
+        /// seperate logics with views
         RegExp regex = RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Password is required for login");
@@ -264,6 +275,8 @@ class _LoginScreenState extends State<LoginScreen> {
           showSpinner = false;
         });
       } on FirebaseAuthException catch (error) {
+        /// Review: should have enum or class with static consts to declare all of the
+        /// codes
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";

@@ -22,15 +22,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _appStateManager = AppStateManager();
-  final _profileManager = ProfileManager();
-  late AppRouter _appRouter;
+  /// Review: usages of [_appStateManager] and [_profileManager] are not necessary.
+  /// Can just initialize them as properties of [_appRouter]
+  /// E.g
+  late final AppRouter _appRouter;
 
+  /// Review: This app router don't have to be initialized in [initState]
+  /// It can be declear directly instead of [late].
   @override
   void initState() {
     _appRouter = AppRouter(
-      appStateManager: _appStateManager,
-      profileManager: _profileManager,
+      appStateManager: AppStateManager(),
+      profileManager: ProfileManager(),
     );
     super.initState();
   }
@@ -40,10 +43,10 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => _appStateManager,
+          create: (context) => _appRouter.appStateManager,
         ),
         ChangeNotifierProvider(
-          create: (context) => _profileManager,
+          create: (context) => _appRouter.profileManager,
         ),
       ],
       child: Consumer<ProfileManager>(
