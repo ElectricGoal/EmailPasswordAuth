@@ -7,10 +7,10 @@ class InitializeScreen extends StatefulWidget {
   const InitializeScreen({Key? key}) : super(key: key);
 
   static MaterialPage page() {
-    return MaterialPage(
+    return const MaterialPage(
       name: AppPages.initalizePath,
       key: ValueKey(AppPages.initalizePath),
-      child: const InitializeScreen(),
+      child: InitializeScreen(),
     );
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:login_app/models/models.dart';
 import 'package:login_app/screens/screens.dart';
 
+class ScreenConfig {}
+
 class AppRouter extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   @override
@@ -33,18 +35,30 @@ class AppRouter extends RouterDelegate
         /// Review: use too many bool variables make this code looks super complicated.
         /// Should investigate about [currrentConfiguration] and make use of that configuration
         /// to manage pages
-        if (!appStateManager.isInitialized) InitializeScreen.page(),
-        if (appStateManager.isInitialized &&
-            !appStateManager.isLoggedIn &&
-            !appStateManager.isResetPass)
+        if (appStateManager.currentAppState == AppState.initialize)
+          InitializeScreen.page(),
+        if (appStateManager.currentAppState == AppState.logIn)
           LoginScreen.page(),
-        if (appStateManager.isResetPass) ResetPasswordScreen.page(),
-        if (appStateManager.isLoggedIn && !appStateManager.isRegistered)
+        if (appStateManager.currentAppState == AppState.register)
           RegisterScreen.page(),
-        if (appStateManager.isLoggedIn && appStateManager.isRegistered)
+        if (appStateManager.currentAppState == AppState.resetPass)
+          ResetPasswordScreen.page(),
+        if (appStateManager.currentAppState == AppState.home)
           Home.page(appStateManager.getSelectedTab),
         if (profileManager.didSelectUser)
           ProfileScreen.page(profileManager.getUser),
+        // if (!appStateManager.isInitialized) InitializeScreen.page(),
+        // if (appStateManager.isInitialized &&
+        //     !appStateManager.isLoggedIn &&
+        //     !appStateManager.isResetPass)
+        //   LoginScreen.page(),
+        // if (appStateManager.isResetPass) ResetPasswordScreen.page(),
+        // if (appStateManager.isLoggedIn && !appStateManager.isRegistered)
+        //   RegisterScreen.page(),
+        // if (appStateManager.isLoggedIn && appStateManager.isRegistered)
+        //   Home.page(appStateManager.getSelectedTab),
+        // if (profileManager.didSelectUser)
+        //   ProfileScreen.page(profileManager.getUser),
       ],
     );
   }
@@ -61,14 +75,15 @@ class AppRouter extends RouterDelegate
       appStateManager.resetPass(false);
     }
     if (route.settings.name == AppPages.registerPath) {
-      appStateManager.returnToLogin();
+      appStateManager.goToRegisterScreen(false);
     }
     if (route.settings.name == AppPages.profilePath) {
-      profileManager.tapOnProfile(false);
+      profileManager.onProfilePressed(false);
     }
     return true;
   }
 
   @override
+  // ignore: avoid_returning_null_for_void
   Future<void> setNewRoutePath(configuration) async => null;
 }

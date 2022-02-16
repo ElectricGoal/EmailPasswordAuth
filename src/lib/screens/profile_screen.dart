@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
   static MaterialPage page(UserModel user) {
     return MaterialPage(
       name: AppPages.profilePath,
-      key: ValueKey(AppPages.profilePath),
+      key: const ValueKey(AppPages.profilePath),
       child: ProfileScreen(
         user: user,
       ),
@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           onPressed: () {
             Provider.of<ProfileManager>(context, listen: false)
-                .tapOnProfile(false);
+                .onProfilePressed(false);
           },
         ),
         actions: [
@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           logout();
 
           Provider.of<ProfileManager>(context, listen: false)
-              .tapOnProfile(false);
+              .onProfilePressed(false);
 
           Provider.of<AppStateManager>(context, listen: false).logout();
 

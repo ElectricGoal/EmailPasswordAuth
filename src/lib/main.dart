@@ -25,18 +25,24 @@ class _MyAppState extends State<MyApp> {
   /// Review: usages of [_appStateManager] and [_profileManager] are not necessary.
   /// Can just initialize them as properties of [_appRouter]
   /// E.g
-  late final AppRouter _appRouter;
+  // late final AppRouter _appRouter;
 
   /// Review: This app router don't have to be initialized in [initState]
   /// It can be declear directly instead of [late].
-  @override
-  void initState() {
-    _appRouter = AppRouter(
+  
+  // @override
+  // void initState() {
+  //   _appRouter = AppRouter(
+  //     appStateManager: AppStateManager(),
+  //     profileManager: ProfileManager(),
+  //   );
+  //   super.initState();
+  // }
+
+  final AppRouter _appRouter = AppRouter(
       appStateManager: AppStateManager(),
       profileManager: ProfileManager(),
     );
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

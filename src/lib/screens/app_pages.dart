@@ -1,9 +1,9 @@
 class AppPages {
   /// Review: should all const. Keyword: lint for flutter
-  static String initalizePath = '/initialize';
-  static String loginPath = '/login';
-  static String registerPath = '/register';
-  static String home = '/';
-  static String profilePath = '/profile';
-  static String resetPassPath = '/resetPass';
+  static const  String initalizePath = '/initialize';
+  static const String loginPath = '/login';
+  static const String registerPath = '/register';
+  static const String home = '/';
+  static const String profilePath = '/profile';
+  static const String resetPassPath = '/resetPass';
 }

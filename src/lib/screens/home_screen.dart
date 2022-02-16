@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
   static MaterialPage page(int currentTab) {
     return MaterialPage(
       name: AppPages.home,
-      key: ValueKey(AppPages.home),
+      key: const ValueKey(AppPages.home),
       child: Home(
         currentTab: currentTab,
       ),
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   ];
 
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel(
+  UserModel loggedInUser = const UserModel(
     uid: 'None',
     firstName: 'None',
     lastName: 'None',
@@ -73,14 +73,21 @@ class _HomeState extends State<Home> {
 
               /// Review: should add a check just in case parsing model from json cause
               /// error which will obviously break all the below code.
-              loggedInUser = UserModel.fromMap(data);
-              //print(loggedInUser.firstName);
-              Provider.of<ProfileManager>(context, listen: true)
-                  .getDataUser(loggedInUser);
-              return IndexedStack(
-                index: widget.currentTab,
-                children: pages,
-              );
+              switch (snapshot.data) {
+                case null:
+                  return const Center(
+                    child: Text('Something gone wrong'),
+                  );
+                default:
+                  loggedInUser = UserModel.fromMap(data);
+                  //print(loggedInUser.firstName);
+                  Provider.of<ProfileManager>(context, listen: true)
+                      .updateUserData(loggedInUser);
+                  return IndexedStack(
+                    index: widget.currentTab,
+                    children: pages,
+                  );
+              }
             },
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -93,15 +100,15 @@ class _HomeState extends State<Home> {
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                label: 'Tab 0',
-                icon: Icon(Icons.explore),
+                label: 'Chat',
+                icon: Icon(Icons.chat),
               ),
               BottomNavigationBarItem(
-                label: 'Tab 1',
-                icon: Icon(Icons.book),
+                label: 'Search',
+                icon: Icon(Icons.search),
               ),
               BottomNavigationBarItem(
-                label: 'Tab 2',
+                label: 'List',
                 icon: Icon(Icons.list),
               ),
             ],
@@ -122,7 +129,7 @@ class _HomeState extends State<Home> {
         ),
         onTap: () {
           Provider.of<ProfileManager>(context, listen: false)
-              .tapOnProfile(true);
+              .onProfilePressed(true);
         },
       ),
     );
